@@ -73,10 +73,19 @@ public class PlayerController : MonoBehaviour
             checkPoint.transform.localPosition = Vector3.down * 0.5f;
             groundCheckPoint = checkPoint.transform;
         }
+        
+        // Ensure player has the correct tag
+        if (!gameObject.CompareTag("Player"))
+        {
+            gameObject.tag = "Player";
+        }
     }
 
     void Update()
     {
+        // Don't update movement if game is over or paused
+        if (IsGameStopped()) return;
+        
         CheckGroundStatus();
         HandleMovement();
         HandleHovering();
@@ -93,6 +102,27 @@ public class PlayerController : MonoBehaviour
                 bounceTimer = 0f;
             }
         }
+    }
+    
+    bool IsGameStopped()
+    {
+        // Check if game is over
+        if (GameOverManager.Instance != null && GameOverManager.Instance.IsGameOver())
+        {
+            return true;
+        }
+        
+        // Check if game is paused
+        if (FindObjectOfType<PauseManager>() != null)
+        {
+            PauseManager pauseManager = FindObjectOfType<PauseManager>();
+            if (pauseManager.IsGamePaused())
+            {
+                return true;
+            }
+        }
+        
+        return false;
     }
 
     void CheckGroundStatus()
@@ -259,6 +289,24 @@ public class PlayerController : MonoBehaviour
                 Debug.Log($"Not bouncing - velocity too low: {rb.linearVelocity.y} (need < {-minBounceVelocity})");
         }
     }
+    
+    void OnTriggerEnter(Collider other)
+    {
+        // Don't process collisions if game is over
+        if (IsGameStopped()) return;
+        
+        if (other.CompareTag("Obstacle"))
+        {
+            Debug.Log("Player hit an obstacle!");
+            // The obstacle will handle the collision logic
+        }
+        
+        if (other.CompareTag("Gem"))
+        {
+            Debug.Log("Player collected a gem!");
+            // The gem will handle the collection logic
+        }
+    }
 
     // Public method to adjust bounce settings during gameplay
     public void SetBounceSettings(float force, float minVelocity, bool enabled)
@@ -284,16 +332,26 @@ public class PlayerController : MonoBehaviour
         Vector3 currentEuler = transform.eulerAngles;
         transform.eulerAngles = new Vector3(currentEuler.x, currentEuler.y, originalRotation.z);
     }
-    void OnTriggerEnter(Collider other)
+    
+    // Method to stop player movement (called when game over)
+    public void StopPlayer()
     {
-        if (other.CompareTag("Obstacle"))
+        if (rb != null)
         {
-            Debug.Log("Player hit an obstacle!");
-            // The obstacle will handle the collision logic
+            rb.linearVelocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
         }
-        if (other.CompareTag("Gem"))
-        {
-            Debug.Log("Player collected a gem!");
-        }
-}
+    }
+    
+    // Method to disable player input (alternative to stopping completely)
+    public void DisableMovement()
+    {
+        this.enabled = false;
+    }
+    
+    // Method to re-enable player input
+    public void EnableMovement()
+    {
+        this.enabled = true;
+    }
 }
