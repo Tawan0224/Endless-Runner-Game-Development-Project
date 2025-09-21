@@ -24,15 +24,16 @@ Sky Runner is an exciting endless runner game built with Unity where players con
 ## Screenshots
 
 - Main menu screen
-  ![alt text](./Menu.png)
+  ![alt text](./Screenshots/Menu.png)
 - Level selection screen
-  ![alt text](./Level.png)
+  ![alt text](./Screenshots/Level.png)
 - Gameplay in action
-  ![alt text](./Gameplay.png)
+  ![alt text](./Screenshots/GamePlay1.png)
+  ![alt text](./Screenshots/GamePlay2.png)
 - Pause screen
-  ![alt text](./Pause.png)
+  ![alt text](./Screenshots/Pause.png)
 - Game over screen
-  ![alt text](./GameOver.png)
+  ![alt text](./Screenshots/GameOver.png)
 
 
 ## Development Team
