@@ -676,6 +676,60 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &1152550588
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1152550589}
+  - component: {fileID: 1152550590}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1152550589
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1152550588}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 631.32965, y: -40.99667, z: 483.0211}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1152550590
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1152550588}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc94f35e61fcd4476b3ea49b54018b6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  musicSource: {fileID: 0}
+  sfxSource: {fileID: 0}
+  menuMusic: {fileID: 8300000, guid: 6f4cbc4f8d90845688f7eb9c369990cb, type: 3}
+  easyLevelMusic: {fileID: 8300000, guid: 065f8e4be464c448aafaf1269b06b2c1, type: 3}
+  hardLevelMusic: {fileID: 8300000, guid: 27787a2b93e1e4376b43fe0ced5710a5, type: 3}
+  musicVolume: 0.7
+  sfxVolume: 1
+  fadeInDuration: 1
+  fadeOutDuration: 0.5
+  debugAudio: 1
 --- !u!1 &1170169458
 GameObject:
   m_ObjectHideFlags: 0
@@ -926,6 +980,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5073ae2e7db374696a595afe006ef2b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  highScoreText: {fileID: 0}
+  highScoreFormat: 'Best Score: {0}'
+  buttonClickSound: {fileID: 0}
+  buttonHoverSound: {fileID: 0}
 --- !u!1 &1721323544
 GameObject:
   m_ObjectHideFlags: 0
@@ -1149,3 +1207,4 @@ SceneRoots:
   - {fileID: 407165309}
   - {fileID: 1174215220}
   - {fileID: 1773101732}
+  - {fileID: 1152550589}

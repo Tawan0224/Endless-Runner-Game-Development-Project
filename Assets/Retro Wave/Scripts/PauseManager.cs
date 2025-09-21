@@ -27,16 +27,16 @@ public class PauseManager : MonoBehaviour
         // Initialize
         originalTimeScale = Time.timeScale;
         
-        // Make sure pause menu is hidden at start
+        // Hide pause menu at start
         if (pauseMenuPanel != null)
         {
             pauseMenuPanel.SetActive(false);
         }
         
-        // Set up button listeners
+        // Setup button click events
         SetupButtonListeners();
         
-        // Set pause title if available
+        // Set pause title
         if (pauseTitle != null)
         {
             pauseTitle.text = pauseTitleText;
@@ -97,7 +97,7 @@ public class PauseManager : MonoBehaviour
         if (IsGameOver()) return;
         
         isPaused = true;
-        Time.timeScale = 0f; // Freeze the game
+        Time.timeScale = 0f;
         
         if (pauseMenuPanel != null)
         {
@@ -114,14 +114,14 @@ public class PauseManager : MonoBehaviour
     public void ResumeGame()
     {
         isPaused = false;
-        Time.timeScale = originalTimeScale; // Restore normal time
+        Time.timeScale = originalTimeScale;
         
         if (pauseMenuPanel != null)
         {
             pauseMenuPanel.SetActive(false);
         }
         
-        // Hide cursor during gameplay (optional)
+        // Hide cursor during gameplay
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         
@@ -151,7 +151,7 @@ public class PauseManager : MonoBehaviour
         // Reset time scale before loading scene
         Time.timeScale = originalTimeScale;
         
-        // End current game session (save high score if needed)
+        // End current game session
         if (ScoreManager.Instance != null)
         {
             ScoreManager.Instance.EndGame();
@@ -163,16 +163,16 @@ public class PauseManager : MonoBehaviour
         Debug.Log("Returning to Main Menu");
     }
     
-    // Public method to check if game is paused (useful for other scripts)
+    // Check if game is paused
     public bool IsGamePaused()
     {
         return isPaused;
     }
     
-    // Public method to toggle pause (can be called by UI buttons)
+    // Toggle pause state
     public void TogglePause()
     {
-        if (IsGameOver()) return; // Don't toggle if game is over
+        if (IsGameOver()) return;
         
         if (isPaused)
         {
@@ -184,13 +184,13 @@ public class PauseManager : MonoBehaviour
         }
     }
     
-    // Ensure time scale is reset when the script is destroyed
+    // Ensure time scale is reset when destroyed
     void OnDestroy()
     {
         Time.timeScale = originalTimeScale;
     }
     
-    // Handle application focus (pause when window loses focus - optional)
+    // Pause when window loses focus
     void OnApplicationFocus(bool hasFocus)
     {
         if (!hasFocus && !isPaused && !IsGameOver())
@@ -199,7 +199,7 @@ public class PauseManager : MonoBehaviour
         }
     }
     
-    // Handle application pause (for mobile - optional)
+    // Pause when application is paused (mobile)
     void OnApplicationPause(bool pauseStatus)
     {
         if (pauseStatus && !isPaused && !IsGameOver())

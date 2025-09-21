@@ -30,7 +30,7 @@ public class ScoreManager : MonoBehaviour
     
     void Start()
     {
-        // Reset current score when starting a new game
+        // Reset current score when starting new game
         ResetCurrentScore();
     }
     
@@ -77,7 +77,7 @@ public class ScoreManager : MonoBehaviour
         highScore = PlayerPrefs.GetInt("HighScore", 0);
     }
     
-    // Called when returning to menu or ending game
+    // Save high score when ending game
     public void EndGame()
     {
         if (currentScore > highScore)
@@ -87,7 +87,7 @@ public class ScoreManager : MonoBehaviour
         }
     }
     
-    // Optional: Method to get score formatted as string
+    // Get score formatted as string
     public string GetFormattedScore()
     {
         return currentScore.ToString("N0");

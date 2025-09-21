@@ -7,7 +7,7 @@ public class GemCollectible : MonoBehaviour
     public AudioClip collectSound;
     
     [Header("Visual Effects")]
-    public GameObject collectEffect; // Particle effect prefab
+    public GameObject collectEffect;
     public bool rotateGem = true;
     public float rotationSpeed = 90f;
     
@@ -23,7 +23,7 @@ public class GemCollectible : MonoBehaviour
     {
         startPosition = transform.position;
         
-        // Get or create AudioSource
+        // Setup audio component
         audioSource = GetComponent<AudioSource>();
         if (audioSource == null && collectSound != null)
         {
@@ -31,7 +31,7 @@ public class GemCollectible : MonoBehaviour
             audioSource.playOnAwake = false;
         }
         
-        // Ensure we have a trigger collider
+        // Ensure trigger collider exists
         Collider col = GetComponent<Collider>();
         if (col == null)
         {
@@ -48,7 +48,7 @@ public class GemCollectible : MonoBehaviour
             transform.Rotate(0, rotationSpeed * Time.deltaTime, 0);
         }
         
-        // Bob up and down
+        // Bob up and down animation
         if (enableBobbing)
         {
             float newY = startPosition.y + Mathf.Sin(Time.time * bobSpeed) * bobHeight;
@@ -66,10 +66,10 @@ public class GemCollectible : MonoBehaviour
     
     void CollectGem()
     {
-        // Add to score
+        // Add points to score
         ScoreManager.Instance.AddScore(gemValue);
         
-        // Play sound effect
+        // Play collection sound
         if (audioSource != null && collectSound != null)
         {
             audioSource.PlayOneShot(collectSound);
@@ -81,11 +81,11 @@ public class GemCollectible : MonoBehaviour
             Instantiate(collectEffect, transform.position, Quaternion.identity);
         }
         
-        // Disable visual components but keep GameObject for sound
+        // Hide visual components but keep GameObject for sound
         GetComponent<Renderer>().enabled = false;
         GetComponent<Collider>().enabled = false;
         
-        // Destroy after sound finishes (or immediately if no sound)
+        // Destroy after sound finishes
         float destroyDelay = (collectSound != null) ? collectSound.length : 0f;
         Destroy(gameObject, destroyDelay);
     }

@@ -9,7 +9,7 @@ public class PauseButton : MonoBehaviour
     
     void Start()
     {
-        // Find the pause manager in the scene
+        // Find pause manager in scene
         pauseManager = FindObjectOfType<PauseManager>();
         
         if (pauseManager == null)
@@ -18,7 +18,7 @@ public class PauseButton : MonoBehaviour
             return;
         }
         
-        // Get the button component and add listener
+        // Setup button click event
         pauseButton = GetComponent<Button>();
         pauseButton.onClick.AddListener(OnPauseButtonClicked);
     }
@@ -33,7 +33,7 @@ public class PauseButton : MonoBehaviour
     
     void Update()
     {
-        // Hide pause button when game is already paused
+        // Disable button when game is already paused
         if (pauseManager != null && pauseButton != null)
         {
             pauseButton.interactable = !pauseManager.IsGamePaused();

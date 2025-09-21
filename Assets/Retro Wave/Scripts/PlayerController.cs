@@ -7,37 +7,37 @@ public class PlayerController : MonoBehaviour
     public float strafeSpeed = 200f;
 
     [Header("Hovering Settings")]
-    public float hoverHeight = 2f; // Height above ground to maintain
-    public float hoverForce = 500f; // Force used to maintain hover height
-    public float hoverDamping = 50f; // Damping to reduce oscillation
-    public float fallMultiplier = 5f; // Increased for faster falling
+    public float hoverHeight = 2f;
+    public float hoverForce = 500f;
+    public float hoverDamping = 50f;
+    public float fallMultiplier = 5f;
 
     [Header("Banking Settings")]
     public float maxBankAngle = 45f;
     public float bankSpeed = 5f;
 
     [Header("Ground Detection")]
-    public LayerMask groundLayer = -1; //All layers by default
-    public float groundCheckDistance = 10f; // Increased for better hover detection
-    public Transform groundCheckPoint; //assign a child object for ground checking
+    public LayerMask groundLayer = -1;
+    public float groundCheckDistance = 10f;
+    public Transform groundCheckPoint;
 
     [Header("Bounce Settings")]
-    public float bounceForce = 100f; // Reduced from 500f for gentler bounce
-    public float minBounceVelocity = 2f; //Minimum downward velocity needed to bounce
+    public float bounceForce = 100f;
+    public float minBounceVelocity = 2f;
     public bool enableBouncing = true;
     public bool debugBouncing = true;
 
     [Header("Fall Settings")]
-    public float maxFallSpeed = 50f; // Limit maximum fall speed
-    public bool enableFastFall = true; // Enable fast falling after bounce
+    public float maxFallSpeed = 50f;
+    public bool enableFastFall = true;
 
     private Rigidbody rb;
     private float currentBankAngle = 0f;
     private Vector3 originalRotation;
     private bool isGrounded = false;
-    private bool justBounced = false; // Track if we just bounced
-    private float bounceTimer = 0f; // Timer to disable hover briefly after bounce
-    private float bounceDisableTime = 0.5f; // How long to disable hover after bounce
+    private bool justBounced = false;
+    private float bounceTimer = 0f;
+    private float bounceDisableTime = 0.5f;
 
     void Start()
     {
@@ -48,16 +48,16 @@ public class PlayerController : MonoBehaviour
         }
         rb.freezeRotation = false;
 
-        // Add constraints to prevent unwanted spinning
+        // Prevent unwanted spinning
         rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY;
 
-        // Use continuous collision detection to prevent going through objects
+        // Use continuous collision detection
         rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
 
-        // Store the original rotation
+        // Store original rotation
         originalRotation = transform.eulerAngles;
 
-        // Make sure the vehicle has a collider
+        // Ensure vehicle has a collider
         Collider vehicleCollider = GetComponent<Collider>();
         if (vehicleCollider == null)
         {
@@ -65,7 +65,7 @@ public class PlayerController : MonoBehaviour
             Debug.Log("Added BoxCollider to vehicle");
         }
 
-        // Set up ground check point if not assigned
+        // Setup ground check point if not assigned
         if (groundCheckPoint == null)
         {
             GameObject checkPoint = new GameObject("GroundCheckPoint");
@@ -74,7 +74,7 @@ public class PlayerController : MonoBehaviour
             groundCheckPoint = checkPoint.transform;
         }
         
-        // Ensure player has the correct tag
+        // Ensure player has correct tag
         if (!gameObject.CompareTag("Player"))
         {
             gameObject.tag = "Player";
@@ -83,7 +83,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        // Don't update movement if game is over or paused
+        // Don't update movement if game is stopped
         if (IsGameStopped()) return;
         
         CheckGroundStatus();
@@ -131,7 +131,7 @@ public class PlayerController : MonoBehaviour
         RaycastHit hit;
         isGrounded = Physics.Raycast(rayOrigin, Vector3.down, out hit, groundCheckDistance, groundLayer);
 
-        // Optional: Draw debug ray in scene view
+        // Draw debug ray in scene view
         if (debugBouncing)
         {
             Debug.DrawRay(rayOrigin, Vector3.down * groundCheckDistance, isGrounded ? Color.green : Color.red);
@@ -153,7 +153,7 @@ public class PlayerController : MonoBehaviour
 
     void HandleHovering()
     {
-        // Don't hover immediately after bouncing to allow faster fall
+        // Don't hover immediately after bouncing
         if (justBounced) return;
 
         Vector3 rayOrigin = groundCheckPoint ? groundCheckPoint.position : transform.position;
@@ -164,8 +164,7 @@ public class PlayerController : MonoBehaviour
             float currentHeight = hit.distance;
             float heightDifference = hoverHeight - currentHeight;
 
-            // Only apply hover force if we're close to target height
-            // This prevents interference when falling from high bounces
+            // Only apply hover force if close to target height
             if (currentHeight <= hoverHeight * 2f)
             {
                 // Calculate hover force based on height difference
@@ -185,7 +184,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            // If no ground detected within range, apply stronger gravity
+            // Apply stronger gravity if no ground detected
             rb.AddForce(Physics.gravity * fallMultiplier, ForceMode.Acceleration);
         }
     }
@@ -200,7 +199,7 @@ public class PlayerController : MonoBehaviour
             rb.AddForce(Vector3.down * fallMultiplier * 100f, ForceMode.Force);
         }
 
-        // Limit maximum fall speed to prevent going through colliders
+        // Limit maximum fall speed
         if (rb.linearVelocity.y < -maxFallSpeed)
         {
             Vector3 velocity = rb.linearVelocity;
@@ -213,13 +212,13 @@ public class PlayerController : MonoBehaviour
     {
         float horizontal = Input.GetAxis("Horizontal");
 
-        // Calculate target bank angle based on horizontal input
+        // Calculate target bank angle based on input
         float targetBankAngle = -horizontal * maxBankAngle;
 
         // Smoothly interpolate to target angle
         currentBankAngle = Mathf.Lerp(currentBankAngle, targetBankAngle, Time.deltaTime * bankSpeed);
 
-        // Apply banking while preserving physics rotation on other axes
+        // Apply banking while preserving physics rotation
         Vector3 currentEuler = transform.eulerAngles;
         transform.eulerAngles = new Vector3(currentEuler.x, currentEuler.y, originalRotation.z + currentBankAngle);
     }
@@ -240,7 +239,7 @@ public class PlayerController : MonoBehaviour
 
     bool IsGroundCollision(Collision collision)
     {
-        // Check if the collision is with ground layer
+        // Check if collision is with ground layer
         bool isGround = (groundLayer.value & (1 << collision.gameObject.layer)) > 0;
         if (debugBouncing && isGround)
         {
@@ -259,7 +258,7 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        // Get the collision normal (surface direction)
+        // Get collision normal
         Vector3 collisionNormal = collision.contacts[0].normal;
 
         if (debugBouncing)
@@ -268,15 +267,15 @@ public class PlayerController : MonoBehaviour
             Debug.Log($"Current velocity Y: {rb.linearVelocity.y}");
         }
 
-        // Only bounce if we're moving downward with sufficient speed
+        // Only bounce if moving downward with sufficient speed
         if (rb.linearVelocity.y < -minBounceVelocity)
         {
             if (debugBouncing)
                 Debug.Log("BOUNCING!");
 
-            // Gentler bounce - just reverse some of the downward velocity
+            // Apply gentle bounce
             Vector3 currentVelocity = rb.linearVelocity;
-            currentVelocity.y = bounceForce; // Much smaller bounce force
+            currentVelocity.y = bounceForce;
             rb.linearVelocity = currentVelocity;
 
             // Set bounce state to temporarily disable hover
@@ -292,23 +291,21 @@ public class PlayerController : MonoBehaviour
     
     void OnTriggerEnter(Collider other)
     {
-        // Don't process collisions if game is over
+        // Don't process collisions if game is stopped
         if (IsGameStopped()) return;
         
         if (other.CompareTag("Obstacle"))
         {
             Debug.Log("Player hit an obstacle!");
-            // The obstacle will handle the collision logic
         }
         
         if (other.CompareTag("Gem"))
         {
             Debug.Log("Player collected a gem!");
-            // The gem will handle the collection logic
         }
     }
 
-    // Public method to adjust bounce settings during gameplay
+    // Adjust bounce settings during gameplay
     public void SetBounceSettings(float force, float minVelocity, bool enabled)
     {
         bounceForce = force;
@@ -316,7 +313,7 @@ public class PlayerController : MonoBehaviour
         enableBouncing = enabled;
     }
 
-    // Public method to adjust hover settings during gameplay
+    // Adjust hover settings during gameplay
     public void SetHoverSettings(float height, float force, float damping, float fallMult = 3f)
     {
         hoverHeight = height;
@@ -325,7 +322,7 @@ public class PlayerController : MonoBehaviour
         fallMultiplier = fallMult;
     }
 
-    // Optional: Call this method if you want to reset banking (e.g., when player stops moving)
+    // Reset banking when player stops moving
     public void ResetBanking()
     {
         currentBankAngle = 0f;
@@ -333,7 +330,7 @@ public class PlayerController : MonoBehaviour
         transform.eulerAngles = new Vector3(currentEuler.x, currentEuler.y, originalRotation.z);
     }
     
-    // Method to stop player movement (called when game over)
+    // Stop player movement when game over
     public void StopPlayer()
     {
         if (rb != null)
@@ -343,13 +340,13 @@ public class PlayerController : MonoBehaviour
         }
     }
     
-    // Method to disable player input (alternative to stopping completely)
+    // Disable player input
     public void DisableMovement()
     {
         this.enabled = false;
     }
     
-    // Method to re-enable player input
+    // Re-enable player input
     public void EnableMovement()
     {
         this.enabled = true;

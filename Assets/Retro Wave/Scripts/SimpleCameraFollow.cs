@@ -24,7 +24,7 @@ public class PositionOnlyFollow : MonoBehaviour
             }
         }
         
-        // Store the rotation you set manually in the Scene view
+        // Store manually set rotation from Scene view
         if (keepManualRotation)
         {
             initialRotation = transform.eulerAngles;
@@ -34,7 +34,11 @@ public class PositionOnlyFollow : MonoBehaviour
     void LateUpdate()
     {
         if (player == null) return;
+        
+        // Follow player position with offset
         transform.position = player.position + offset;
+        
+        // Keep initial rotation if enabled
         if (keepManualRotation)
         {
             transform.eulerAngles = initialRotation;

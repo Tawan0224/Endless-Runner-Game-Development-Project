@@ -220,9 +220,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   roadLength: 50
-  spawnPoint: {fileID: 0}
-  deletePoint: {fileID: 0}
-  showGizmos: 1
+  overlapAmount: 5
+  enableBoundaries: 1
+  roadWidth: 20
+  autoDetectWidth: 1
+  showDebug: 0
 --- !u!1001 &94195899527674149
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -19,7 +19,7 @@ public class GameOverManager : MonoBehaviour
     public string highScoreFormat = "Best: {0}";
     
     [Header("Game Over Settings")]
-    public float gameOverDelay = 1f; // Delay before showing game over panel
+    public float gameOverDelay = 1f;
     
     [Header("Audio (Optional)")]
     public AudioClip gameOverSound;
@@ -43,13 +43,13 @@ public class GameOverManager : MonoBehaviour
     
     void Start()
     {
-        // Initialize
+        // Initialize panel as hidden
         if (gameOverPanel != null)
         {
             gameOverPanel.SetActive(false);
         }
         
-        // Setup audio
+        // Setup audio component
         audioSource = GetComponent<AudioSource>();
         if (audioSource == null && gameOverSound != null)
         {
@@ -57,7 +57,7 @@ public class GameOverManager : MonoBehaviour
             audioSource.playOnAwake = false;
         }
         
-        // Setup button listeners
+        // Setup button click events
         SetupButtonListeners();
     }
     
@@ -76,7 +76,8 @@ public class GameOverManager : MonoBehaviour
     
     public void TriggerGameOver()
     {
-        if (isGameOver) return; // Prevent multiple calls
+        // Prevent multiple calls
+        if (isGameOver) return;
         
         isGameOver = true;
         
@@ -90,7 +91,7 @@ public class GameOverManager : MonoBehaviour
             Debug.Log("Disabled PauseManager to prevent conflicts");
         }
         
-        // Stop the game immediately
+        // Stop game time
         Time.timeScale = 0f;
         
         // Play game over sound
@@ -99,7 +100,7 @@ public class GameOverManager : MonoBehaviour
             audioSource.PlayOneShot(gameOverSound);
         }
         
-        // Show cursor for UI navigation
+        // Enable cursor for UI navigation
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         
@@ -109,7 +110,7 @@ public class GameOverManager : MonoBehaviour
             ScoreManager.Instance.EndGame();
         }
         
-        // Show game over panel immediately (no delay to avoid invoke issues with Time.timeScale = 0)
+        // Show game over panel immediately
         ShowGameOverPanel();
     }
     
@@ -119,7 +120,7 @@ public class GameOverManager : MonoBehaviour
         {
             gameOverPanel.SetActive(true);
             
-            // Ensure the Canvas can receive input during pause
+            // Ensure canvas can receive input during pause
             Canvas canvas = gameOverPanel.GetComponentInParent<Canvas>();
             if (canvas != null)
             {
@@ -152,7 +153,7 @@ public class GameOverManager : MonoBehaviour
     
     public void RestartGame()
     {
-        Debug.Log("Restart button clicked!"); // Add this debug line
+        Debug.Log("Restart button clicked!");
         
         // Re-enable pause manager
         PauseManager pauseManager = FindObjectOfType<PauseManager>();
@@ -177,9 +178,9 @@ public class GameOverManager : MonoBehaviour
     
     public void BackToMainMenu()
     {
-        Debug.Log("Main menu button clicked!"); // Add this debug line
+        Debug.Log("Main menu button clicked!");
         
-        // Re-enable pause manager (for other scenes)
+        // Re-enable pause manager for other scenes
         PauseManager pauseManager = FindObjectOfType<PauseManager>();
         if (pauseManager != null)
         {
@@ -199,13 +200,13 @@ public class GameOverManager : MonoBehaviour
         SceneManager.LoadScene("TitleScene");
     }
     
-    // Public method to check if game is over
+    // Check if game is over
     public bool IsGameOver()
     {
         return isGameOver;
     }
     
-    // Method to reset game over state (useful if you want to implement continue functionality)
+    // Reset game over state for continue functionality
     public void ResetGameOverState()
     {
         isGameOver = false;

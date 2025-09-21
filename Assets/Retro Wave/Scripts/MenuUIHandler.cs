@@ -50,7 +50,7 @@ public class MenuUIHandler : MonoBehaviour
         #endif
     }
     
-    // Call this when returning to menu from game
+    // Update high score display when returning to menu
     void OnEnable()
     {
         UpdateHighScoreDisplay();

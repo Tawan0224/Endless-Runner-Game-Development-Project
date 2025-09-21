@@ -1,4 +1,3 @@
-// SimpleRoadManager.cs - Place on empty GameObject in scene
 using UnityEngine;
 using System.Collections.Generic;
 
@@ -7,9 +6,8 @@ public class RoadManager : MonoBehaviour
     public static RoadManager Instance;
     
     [Header("Road Setup")]
-    public GameObject[] roadPrefabs; // Your road prefabs with obstacles/gems attached
-    public int maxActiveRoads = 5; // Keep this many roads active
-    public float extraSpacing = 10f; // Add extra space between roads to prevent overlap
+    public GameObject[] roadPrefabs;
+    public int maxActiveRoads = 5;
     
     [Header("Debug")]
     public bool showDebug = false;
@@ -37,7 +35,7 @@ public class RoadManager : MonoBehaviour
     
     public void SpawnRoad(Vector3 position)
     {
-        // Don't spawn if we have too many roads
+        // Check if maximum roads limit reached
         if (activeRoads.Count >= maxActiveRoads)
         {
             if (showDebug)
@@ -47,7 +45,6 @@ public class RoadManager : MonoBehaviour
             return;
         }
         
-        // Select next road prefab (cycle through them)
         GameObject roadPrefab = GetNextRoadPrefab();
         
         if (roadPrefab == null)
@@ -56,7 +53,7 @@ public class RoadManager : MonoBehaviour
             return;
         }
         
-        // Spawn the road directly at the position (no complex adjustments)
+        // Instantiate road at specified position
         GameObject newRoad = Instantiate(roadPrefab, position, Quaternion.identity);
         activeRoads.Add(newRoad);
         
@@ -65,7 +62,7 @@ public class RoadManager : MonoBehaviour
             Debug.Log($"Spawned road: {newRoad.name} at {position}. Total active roads: {activeRoads.Count}");
         }
         
-        // Clean up null references
+        // Remove destroyed road references
         activeRoads.RemoveAll(road => road == null);
     }
     
@@ -73,12 +70,12 @@ public class RoadManager : MonoBehaviour
     {
         if (roadPrefabs.Length == 0) return null;
         
-        // Cycle through road prefabs to add variety
+        // Cycle through road prefabs for variety
         lastUsedRoadIndex = (lastUsedRoadIndex + 1) % roadPrefabs.Length;
         return roadPrefabs[lastUsedRoadIndex];
     }
     
-    // Call this when starting a new game to clear old roads
+    // Clear all roads when starting new game
     public void ClearAllRoads()
     {
         foreach (GameObject road in activeRoads)
@@ -98,10 +95,11 @@ public class RoadManager : MonoBehaviour
     
     void Update()
     {
-        // Clean up destroyed roads from the list
+        // Clean up destroyed roads from list
         activeRoads.RemoveAll(road => road == null);
         
-        if (showDebug && Time.frameCount % 120 == 0) // Every 2 seconds
+        // Debug info every 2 seconds
+        if (showDebug && Time.frameCount % 120 == 0)
         {
             Debug.Log($"Active roads: {activeRoads.Count}");
         }

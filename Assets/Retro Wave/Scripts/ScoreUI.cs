@@ -27,15 +27,14 @@ public class ScoreUI : MonoBehaviour
             originalScale = scoreText.transform.localScale;
         }
         
-        // Subscribe to score events (simplified - no events needed)
+        // Initialize display
         if (ScoreManager.Instance != null)
         {
-            // Initialize display
             UpdateScoreDisplay(ScoreManager.Instance.GetCurrentScore());
             UpdateHighScoreDisplay(ScoreManager.Instance.GetHighScore());
         }
         
-        // Update UI every frame (simple approach)
+        // Update UI every 0.1 seconds
         InvokeRepeating("UpdateUI", 0f, 0.1f);
     }
     
@@ -106,7 +105,7 @@ public class ScoreUI : MonoBehaviour
         textTransform.localScale = originalScale;
     }
     
-    // Method to manually refresh the UI
+    // Manually refresh the UI
     public void RefreshUI()
     {
         if (ScoreManager.Instance != null)
