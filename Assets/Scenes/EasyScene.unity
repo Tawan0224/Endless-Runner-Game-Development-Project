@@ -4636,7 +4636,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7fc070f9673549f79af732b7b203272, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forwardSpeed: 700
+  forwardSpeed: 500
   strafeSpeed: 400
   hoverHeight: 2
   hoverForce: 10
