@@ -1,8 +1,8 @@
-# Sky Runner
+# Retrowave
 
 ## Description
 
-Sky Runner is an exciting endless runner game built with Unity where players control a hovering vehicle navigating through procedurally generated roads. Players must avoid obstacles while collecting gems to achieve the highest score possible. The game features dynamic physics-based movement with hovering mechanics, banking turns, and responsive controls.
+Retrowave is an exciting endless runner game built with Unity where players control a hovering vehicle navigating through procedurally generated roads. Players must avoid obstacles while collecting gems to achieve the highest score possible. The game features dynamic physics-based movement with hovering mechanics, banking turns, and responsive controls.
 
 ### Key Features
 - **Endless Gameplay**: Procedurally generated road segments for infinite gameplay
